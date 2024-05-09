@@ -1,7 +1,7 @@
 $(document).ready(function() {
     // Fetch data from server
     $.ajax({
-        url: 'http://localhost:8080/autoparts', // Endpoint to fetch products from server
+        url: 'http://localhost:/autoparts', // Endpoint to fetch products from server
         type: 'GET',
         success: function(data) {
             // Render products in table
