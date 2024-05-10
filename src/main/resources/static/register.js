@@ -1,67 +1,39 @@
-document.addEventListener("DOMContentLoaded", function () {
+function registerAutoPart(code, name, price) {
+  const apiUrl = 'http://localhost:8080/autoparts'; // Replace with your actual API endpoint
 
-  // Function to register a new auto part
-  function registerAutoPart() {
-    const formPartCode = document.getElementById("code").value;
-    const formPartName = document.getElementById("name").value;
-    const formPrice = document.getElementById("price").value;
+  // Data for the new auto part
+  const autoPartData = {
+    code: code.value,
+    name: name.value,
+    price: price.value
+  };
 
-    const newAutoPart = {
-      code: formPartCode,
-      name: formPartName,
-      price: formPrice,
-    };
+  // Configure the request
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(autoPartData)
+  };
 
-    const apiUrl = "http://localhost:8080/autoparts"; // Replace with actual API endpoint
-
-    // Configure the request
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newAutoPart)
-    };
-
-    // Make the POST request
-    fetch(apiUrl, requestOptions)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(autoPartFromAPI => {
-        console.log('New auto part created:', autoPartFromAPI);
-        cleanFormFields();
-        alert("¡Autoparte registrada con éxito!");
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        // Handle error here
-      });
-  }
-
-  // Function to clean form fields
-  function cleanFormFields() {
-    document.getElementById("code").value = "";
-    document.getElementById("name").value = "";
-    document.getElementById("price").value = "";
-  }
-
-  // Function to save the auto part (combines logic)
-  function saveAutoPart() {
-    registerAutoPart(); // Call the existing function to register
-  }
-
-  // Add event listener to the register button (modified for "save")
-  const registerButton = document.getElementById("registerButton");
-  if (registerButton) {
-    registerButton.addEventListener("click", saveAutoPart);
-  } else {
-    console.error("No se encontró el botón de registro.");
-  }
-
-});
-
-  
+  // Make the POST request
+  fetch(apiUrl, requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('New auto part created:', data);
+      // Clear input fields (assuming they have a value property)
+      code.value = "";
+      name.value = "";
+      price.value = "";
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Handle error here (e.g., display an error message)
+    });
+}
